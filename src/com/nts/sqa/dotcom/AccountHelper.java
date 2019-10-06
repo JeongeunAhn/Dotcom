@@ -1,5 +1,4 @@
 package com.nts.sqa.dotcom;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +38,7 @@ public class AccountHelper {
 		}
 		//계정이 없는 경우
 		else if(option == 2) {
-			
+			System.out.println("계정이 없습니다");
 		}
 		//잘못입력한 경우
 		else {
