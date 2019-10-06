@@ -1,5 +1,6 @@
 package com.nts.sqa.dotcom;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -36,30 +37,62 @@ public class DotComBust {
 		System.out.println("If you have account, please press 1. If not, press 2 to make account.");
 		Scanner sc = new Scanner(System.in);
 		int login_option = 1;
-		int grid_size=7;
-		int num_of_dotcom=3;
-		try {
-			login_option = sc.nextInt();
-		} catch (InputMismatchException e) {
-			System.out.println("press 1 or 2.");
-			login_option = sc.nextInt();
+		int grid_size = 7;
+		int num_of_dotcom = 3;
+		while (true) {
+			try {
+				login_option = sc.nextInt();
+				if (login_option == 1 || login_option == 2) {
+					break;
+				} else {
+					System.out.println("1 또는 2를 입력하세요");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("press 1 or 2.");
+			}
 		}
 		// 사용자의 입력을 받아 accounthelper 객체로 넘긴다
 		accounthelper.accountcheck(login_option);
 		// 계정정보가 맞다면, 나머지 게임 세팅을 시작한다.
 		if (accounthelper.validaccount == true) {
-			//grid 사이즈 받기
-			System.out.println("Please, enter grid size");
-			grid_size=sc.nextInt();
-			//dotcom 개수 받기
-			System.out.println("Please, enter the number of dotcoms");
-			num_of_dotcom = sc.nextInt();
-			//for(int i=0; i<num_of_dotcom;i++)
-			// 이부분 책보고 이해한 후 수정하기!
-			for (DotCom dotComToSet : dotComsList) {
-				ArrayList<String> newLocation = helper.placeDotCom(num_of_dotcom);
+			// grid 사이즈 받기 7~11
+			System.out.println("그리드 사이즈를 입력하세요 : ");
+			while (true) {
+				try {
+					grid_size = sc.nextInt();
+					if (grid_size >= 7 && grid_size <= 11) {
+						break;
+					} else {
+						System.out.println("7에서 11사이의 숫자를 입력하세요.");
+					}
+				} catch (InputMismatchException e) {
+					System.out.println("숫자를 입력하세요");
+				}
+			}
+
+			// dotcom 개수 받기 3~5. grid size가 7인 경우 dotcom개수는 3개, 나머지는 자유
+			if (grid_size == 7) {
+				System.out.println("grid size로 7을 선택하셨습니다. dotcom의 개수는 3개입니다.");
+			} else {
+				System.out.println("dotcom 개수를 입력하세요");
+				while (true) {
+					try {
+						num_of_dotcom = sc.nextInt();
+						if (num_of_dotcom >= 3 && num_of_dotcom <= 5)
+							break;
+						else {
+							System.out.println("3에서 5사이의 숫자를 입력하세요.");
+						}
+					} catch (InputMismatchException e) {
+						System.out.println("숫자를 입력하세요.");
+					}
+				}
+			}
+
+			for (DotCom dotComToSet : dotComsList) { // 목록에 있는 각 닷컴에 대해 반복
+				ArrayList<String> newLocation = helper.placeDotCom(num_of_dotcom); // 닷컴의 위치를 지정하기 위한 보조 메소드 호출
 				// DotCom dotComToSet = (DotCom) dotComsList.get(i);
-				dotComToSet.setLocationCells(newLocation);
+				dotComToSet.setLocationCells(newLocation);// dot com 객체의 세터 메소드를 호출하여 방금 보조 메소드에서 받아온 위치 지정
 
 			}
 		}
