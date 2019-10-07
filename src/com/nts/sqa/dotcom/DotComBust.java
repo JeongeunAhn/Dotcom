@@ -29,11 +29,10 @@ public class DotComBust {
 		dotComsList.add(three);
 		dotComsList.add(four);
 		dotComsList.add(five);
-		System.out.println("Let's start dotcom Game!");
-		System.out.println("Your goal is to sink dot coms.");
+		System.out.println("닷컴게임을 시작합니다.!");
+		System.out.println("목표는 닷컴들을 가라앉히는 것입니다.");
 		// System.out.println("Pets.com, eToys.com, Go2.com");
 		System.out.println("Try to sink them all in the shortest amount of guesses");
-		System.out.println("Please login before game start");
 		System.out.println("If you have account, please press 1. If not, press 2 to make account.");
 		Scanner sc = new Scanner(System.in);
 		int login_option = 1;
