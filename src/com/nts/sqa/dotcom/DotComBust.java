@@ -60,6 +60,7 @@ public class DotComBust {
 				try {
 					grid_size = sc.nextInt();
 					if (grid_size >= 7 && grid_size <= 11) {
+						helper.setGridLength(grid_size);
 						break;
 					} else {
 						System.out.println("7에서 11사이의 숫자를 입력하세요.");
