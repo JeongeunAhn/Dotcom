@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class DotComBust {
 	private GameHelper helper = new GameHelper();
@@ -66,7 +67,7 @@ public class DotComBust {
 						System.out.println("7에서 11사이의 숫자를 입력하세요.");
 					}
 				} catch (InputMismatchException e) {
-					System.out.println("숫자를 입력하세요");
+					System.out.println("숫자를 입력하세요"); //무한루프돎 확인필요
 				}
 			}
 
@@ -98,7 +99,7 @@ public class DotComBust {
 		}
 	}
 
-	private void startPlaying() {
+	private void startPlaying() throws InterruptedException, ExecutionException {
 
 		while (!dotComsList.isEmpty()) {
 
@@ -143,7 +144,7 @@ public class DotComBust {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		DotComBust game = new DotComBust();
 		game.setUpGame();
 		game.startPlaying();

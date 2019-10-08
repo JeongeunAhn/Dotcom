@@ -4,12 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Timer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class GameHelper {
 	private static final String alphabet = "abcdefg";
 	private int gridLength = 7;
-	private int gridSize = gridLength*gridLength;
+	private int gridSize = gridLength * gridLength;
+
 	public int getGridLength() {
 		return gridLength;
 	}
@@ -21,20 +28,33 @@ public class GameHelper {
 	private int[] grid = new int[gridSize];
 	private int comCount = 0;
 
-	public String getUserInput(String prompt) {
-		String inputLine = null;
+	public String getUserInput(String prompt) throws InterruptedException, ExecutionException {
+		String inputLine = "입력안함";
+		String result="입력안함2";
 		System.out.print(prompt + "  ");
-		Timer m_timer = new Timer();
-		
+
+		ExecutorService threadPool = Executors.newCachedThreadPool();
+		FutureTask<String> task = new FutureTask<String>(new Callable<String>() {
+			public String call() throws Exception {
+				try {
+					BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
+					String inputLine = is.readLine();
+					if (inputLine.length() == 0)
+						return null;
+				} catch (IOException e) {
+					System.out.println("IOException: " + e);
+				}
+				return inputLine;
+			}
+		});
+		threadPool.execute(task);
 		try {
-			BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
-			inputLine = is.readLine();
-			if (inputLine.length() == 0)
-				return null;
-		} catch (IOException e) {
-			System.out.println("IOException: " + e);
+			result = task.get(5, TimeUnit.SECONDS);
+		} catch (TimeoutException e) {
+			System.out.println("입력 시간이 초과되었습니다.");
 		}
-		return inputLine.toLowerCase();
+		//시간 초과는 동작 확인. 입력값이 제대로 넘어가는지 확인필요
+		return result.toLowerCase();
 	}
 
 	public ArrayList<String> placeDotCom(int comSize) { // line 19
