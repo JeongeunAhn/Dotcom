@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class GameHelper {
-	private static final String alphabet = "abcdefg";
+	private static final String alphabet = "abcdefghijklm";
 	private int gridLength = 7;
 	private int gridSize = gridLength * gridLength;
 
