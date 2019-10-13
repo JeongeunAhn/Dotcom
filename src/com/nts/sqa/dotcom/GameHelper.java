@@ -59,25 +59,25 @@ public class GameHelper {
 
 	public ArrayList<String> placeDotCom(int comSize) { // line 19
 		ArrayList<String> alphaCells = new ArrayList<String>();
-		String[] alphacoords = new String[comSize]; // holds 'f6' type coords
-		String temp = null; // temporary String for concat
-		int[] coords = new int[comSize]; // current candidate coords
-		int attempts = 0; // current attempts counter
-		boolean success = false; // flag = found a good location ?
-		int location = 0; // current starting location
+		String[] alphacoords = new String[comSize]; // 'f6'과 같은 좌표가 들어감
+		String temp = null; // 나중에 연결하기 위한 임시 String 배열
+		int[] coords = new int[comSize]; // 현재후보좌표
+		int attempts = 0; // 시도 횟수를 세기 위한 카운터
+		boolean success = false; // 적당한 위치를 찾았는지 표시하기 위한 플래그
+		int location = 0; // 현재시작위치
 
-		comCount++; // nth dot com to place
-		int incr = 1; // set horizontal increment
+		comCount++; // n번째 닷컴
+		int incr = 1; // 수평방향으로 증가시킬 값 설정
 		if ((comCount % 2) == 1) { // if odd dot com (place vertically)
-			incr = gridLength; // set vertical increment
+			incr = gridLength; // 수직방향으로 증가시킬 값 설정
 		}
 
-		while (!success & attempts++ < 200) { // main search loop (32)
+		while (!success & attempts++ < 200) { // 주 검색 순환문 (32)
 			location = (int) (Math.random() * gridSize); // get random starting point
 			// System.out.print(" try " + location);
-			int x = 0; // nth position in dotcom to place
-			success = true; // assume success
-			while (success && x < comSize) { // look for adjacent unused spots
+			int x = 0; // 위치시킬 닷컴의 n번째 위치
+			success = true; // 성공할 것으로 가정
+			while (success && x < comSize) { // 닷컴이 들어갈 자리가 비었는지 확인
 				if (grid[location] == 0) { // if not already used
 					coords[x++] = location; // save location
 					location += incr; // try 'next' adjacent
@@ -94,20 +94,20 @@ public class GameHelper {
 			}
 		} // end while
 
-		int x = 0; // turn good location into alpha coords
+		int x = 0; // 위치를 알파벳좌표로 바꿈
 		int row = 0;
 		int column = 0;
 		// System.out.println("\n");
 		while (x < comSize) {
-			grid[coords[x]] = 1; // mark master grid pts. as 'used'
-			row = (int) (coords[x] / gridLength); // get row value
-			column = coords[x] % gridLength; // get numeric column value
-			temp = String.valueOf(alphabet.charAt(column)); // convert to alpha
+			grid[coords[x]] = 1; // 기본그리드 좌표를 '사용중'으로 표시
+			row = (int) (coords[x] / gridLength); // 행값을 구함
+			column = coords[x] % gridLength; // 열 값(숫자)를 구함
+			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
 
 			alphaCells.add(temp.concat(Integer.toString(row)));
 			x++;
 
-			// System.out.print(" coord "+x+" = " + alphaCells.get(x-1));
+			 System.out.print(" coord "+x+" = " + alphaCells.get(x-1));
 
 		}
 		// System.out.println("\n");

@@ -28,8 +28,7 @@ public class DotComBust {
 		dotComsList.add(one);
 		dotComsList.add(two);
 		dotComsList.add(three);
-		dotComsList.add(four);
-		dotComsList.add(five);
+		
 		System.out.println("닷컴게임을 시작합니다.!");
 		System.out.println("목표는 닷컴들을 가라앉히는 것입니다.");
 		// System.out.println("Pets.com, eToys.com, Go2.com");
@@ -79,8 +78,17 @@ public class DotComBust {
 				while (true) {
 					try {
 						num_of_dotcom = sc.nextInt();
-						if (num_of_dotcom >= 3 && num_of_dotcom <= 5)
+						if (num_of_dotcom >= 3 && num_of_dotcom <= 5) {
+							if(num_of_dotcom == 4) {
+								dotComsList.add(four);
+							}
+							if(num_of_dotcom ==5) {
+								dotComsList.add(four);
+								dotComsList.add(five);
+							}
 							break;
+						}
+							
 						else {
 							System.out.println("3에서 5사이의 숫자를 입력하세요.");
 						}
@@ -91,7 +99,7 @@ public class DotComBust {
 			}
 
 			for (DotCom dotComToSet : dotComsList) { // 목록에 있는 각 닷컴에 대해 반복
-				ArrayList<String> newLocation = helper.placeDotCom(num_of_dotcom); // 닷컴의 위치를 지정하기 위한 보조 메소드 호출
+				ArrayList<String> newLocation = helper.placeDotCom(3); // 닷컴의 위치를 지정하기 위한 보조 메소드 호출
 				// DotCom dotComToSet = (DotCom) dotComsList.get(i);
 				dotComToSet.setLocationCells(newLocation);// dot com 객체의 세터 메소드를 호출하여 방금 보조 메소드에서 받아온 위치 지정
 
