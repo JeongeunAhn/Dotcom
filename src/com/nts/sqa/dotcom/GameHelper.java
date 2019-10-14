@@ -29,16 +29,16 @@ public class GameHelper {
 	private int comCount = 0;
 
 	public String getUserInput(String prompt) throws InterruptedException, ExecutionException {
-		String inputLine = "입력안함";
-		String result="입력안함2";
+		String result= null;
 		System.out.print(prompt + "  ");
 
 		ExecutorService threadPool = Executors.newCachedThreadPool();
 		FutureTask<String> task = new FutureTask<String>(new Callable<String>() {
 			public String call() throws Exception {
+				String inputLine = null;
 				try {
 					BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
-					String inputLine = is.readLine();
+					inputLine = is.readLine();
 					if (inputLine.length() == 0)
 						return null;
 				} catch (IOException e) {
@@ -49,15 +49,16 @@ public class GameHelper {
 		});
 		threadPool.execute(task);
 		try {
-			result = task.get(5, TimeUnit.SECONDS);
+			result = task.get(60, TimeUnit.SECONDS);
+			
 		} catch (TimeoutException e) {
 			System.out.println("입력 시간이 초과되었습니다.");
 		}
-		//시간 초과는 동작 확인. 입력값이 제대로 넘어가는지 확인필요
+		
 		return result.toLowerCase();
 	}
 
-	public ArrayList<String> placeDotCom(int comSize) { // line 19
+	public ArrayList<String> placeDotCom(int comSize) { 
 		ArrayList<String> alphaCells = new ArrayList<String>();
 		String[] alphacoords = new String[comSize]; // 'f6'과 같은 좌표가 들어감
 		String temp = null; // 나중에 연결하기 위한 임시 String 배열
@@ -114,4 +115,32 @@ public class GameHelper {
 
 		return alphaCells;
 	}
+	
+	public ArrayList<String> placeBomb(int numOfDotcom) {
+		int location = 0;
+		int row = 0;
+		int column = 0;
+		boolean flag = true;
+		ArrayList<String> alphaCells = new ArrayList<String>();
+		String temp = null;
+		for (int i = 0; i < numOfDotcom; i++) { // 닷컴의 개수만큼 만들거야
+			while (flag) { //적당한 위치를 찾을 때까지 반복
+				location = (int) (Math.random() * gridSize); //임의의 위치
+				if (location >= gridSize || grid[location] == 1) { //그리드 사이즈를 벗어나거나, 이미 사용중인 경우
+					flag = true; //다시 찾기
+				} else { // 적당한 위치면
+					flag = false; //루프 빠져나가기
+				}
+			}
+			grid[location] = 1; // 기본그리드 좌표를 '사용중'으로 표시
+			row = (int) (location / gridLength); // 행값을 구함
+			column = location % gridLength; // 열 값(숫자)를 구함
+			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
+			alphaCells.add(temp.concat(Integer.toString(row))); //array에 위치 저장하기
+			flag = true; //flag 초기화
+		}
+		return alphaCells;
+	}
+	
+	
 }
