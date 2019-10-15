@@ -15,7 +15,7 @@ public class DotComBust {
 	private ArrayList<String> bombLocation = new ArrayList<String>();
 	private ArrayList<String> Hint = new ArrayList<String>();
 	private int hintcount=3;
-
+	private long beforetime,aftertime,time;
 	private void setUpGame() {
 		// first make some dot coms and give them locations
 		// 닷컴의 개수는 최대 다섯개이므로 다섯개 세팅
@@ -120,7 +120,7 @@ public class DotComBust {
 	}
 
 	private void startPlaying() throws InterruptedException, ExecutionException {
-
+		beforetime = System.currentTimeMillis();
 		while (!dotComsList.isEmpty()) {
 
 			String userGuess = helper.getUserInput("Enter a guess");
@@ -136,6 +136,8 @@ public class DotComBust {
 				checkUserGuess(userGuess);
 			}
 		} // close while
+		aftertime = System.currentTimeMillis();
+		time=(aftertime-beforetime)/1000;
 		finishGame();
 	} // close startPlaying method
 
@@ -176,6 +178,7 @@ public class DotComBust {
 	}
 
 	private void finishGame() {
+		RankHelper rankhelper = new RankHelper(accounthelper.getId(),time,numOfGuesses);
 		System.out.println("All Dot Coms are dead! Your stock is now worthless");
 		if (numOfGuesses <= 9) {
 			System.out.println("It only took you " + numOfGuesses + " guesses.  You get the Enron award!");
