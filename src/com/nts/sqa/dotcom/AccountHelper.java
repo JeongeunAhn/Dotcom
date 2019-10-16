@@ -38,8 +38,8 @@ public class AccountHelper {
 			System.out.println("Password를 입력하세요");
 			System.out.print("PW : ");
 			password = sc.next();
-			try {//C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt
-				// 파일 객체 생성 
+			try {// C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt
+					// 파일 객체 생성
 				File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
 				// 입력 스트림 생성
 				FileReader filereader = new FileReader(file);
@@ -72,19 +72,22 @@ public class AccountHelper {
 				if (id_exist == false) {
 					System.out.println("입력하신 ID가 존재하지 않습니다.");
 					System.out.println("다시 로그인 하시려면 1번, 계정을 만들고 싶으시면 2번을 눌러주세요.");
+					int option = 0;
 					while (true) {
+
 						try {
-							int option = sc.nextInt();
-							if (option == 1) {
-								break;
-							} else if (option == 2) {
-								flag = 1;
-								break loginloop;
-							} else {
-								System.out.println("1또는 2를 입력해주세요.");
-							}
+							option = sc.nextInt();
+
 						} catch (InputMismatchException e) {
 							System.out.println("1 또는 2를 입력해주세요.");
+						}
+						if (option == 1) {
+							break;
+						} else if (option == 2) {
+							flag = 1;
+							break loginloop;
+						} else {
+							System.out.println("1또는 2를 입력해주세요.");
 						}
 					}
 				}
@@ -98,6 +101,15 @@ public class AccountHelper {
 		if (flag == 1)
 			makeaccount();
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 	public void makeaccount() {
 		id_exist = true;
