@@ -34,6 +34,7 @@ public class GameHelper {
 
 		ExecutorService threadPool = Executors.newCachedThreadPool();
 		FutureTask<String> task = new FutureTask<String>(new Callable<String>() {
+			@Override
 			public String call() throws Exception {
 				String inputLine = null;
 				try {
@@ -101,7 +102,7 @@ public class GameHelper {
 		// System.out.println("\n");
 		while (x < comSize) {
 			grid[coords[x]] = 1; // 기본그리드 좌표를 '사용중'으로 표시
-			row = (int) (coords[x] / gridLength); // 행값을 구함
+			row = coords[x] / gridLength; // 행값을 구함
 			column = coords[x] % gridLength; // 열 값(숫자)를 구함
 			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
 
@@ -133,7 +134,7 @@ public class GameHelper {
 				}
 			}
 			grid[location] = 1; // 기본그리드 좌표를 '사용중'으로 표시
-			row = (int) (location / gridLength); // 행값을 구함
+			row = location / gridLength; // 행값을 구함
 			column = location % gridLength; // 열 값(숫자)를 구함
 			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
 			alphaCells.add(temp.concat(Integer.toString(row))); //array에 위치 저장하기
