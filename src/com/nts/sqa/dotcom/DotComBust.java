@@ -31,9 +31,8 @@ public class DotComBust {
 		
 		System.out.println("닷컴게임을 시작합니다.!");
 		System.out.println("목표는 닷컴들을 가라앉히는 것입니다.");
-		// System.out.println("Pets.com, eToys.com, Go2.com");
-		System.out.println("Try to sink them all in the shortest amount of guesses");
-		System.out.println("If you have account, please press 1. If not, press 2 to make account.");
+		System.out.println("가장 적은 횟수로 모든 닷컴들을 가라앉히세요.");
+		System.out.println("로그인 하시려면 1번을, 계정을 만드시려면 2번을 눌러주세요.");
 		Scanner sc = new Scanner(System.in);
 		int login_option = 1;
 		int grid_size = 7;
@@ -97,7 +96,7 @@ public class DotComBust {
 					}
 				}
 			}
-
+			// 이부분 확인하기
 			for (DotCom dotComToSet : dotComsList) { // 목록에 있는 각 닷컴에 대해 반복
 				ArrayList<String> newLocation = helper.placeDotCom(3); // 닷컴의 위치를 지정하기 위한 보조 메소드 호출
 				// DotCom dotComToSet = (DotCom) dotComsList.get(i);
@@ -110,7 +109,7 @@ public class DotComBust {
 	private void startPlaying() throws InterruptedException, ExecutionException {
 
 		while (!dotComsList.isEmpty()) {
-
+			
 			String userGuess = helper.getUserInput("Enter a guess");
 			checkUserGuess(userGuess);
 
