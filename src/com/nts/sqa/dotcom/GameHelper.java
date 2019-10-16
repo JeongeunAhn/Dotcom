@@ -50,10 +50,11 @@ public class GameHelper {
 		});
 		threadPool.execute(task);
 		try {
-			result = task.get(60, TimeUnit.SECONDS);
+			result = task.get(5, TimeUnit.SECONDS);
 			
 		} catch (TimeoutException e) {
 			System.out.println("입력 시간이 초과되었습니다.");
+			return "gameover";
 		}
 		
 		return result.toLowerCase();
@@ -61,7 +62,7 @@ public class GameHelper {
 
 	public ArrayList<String> placeDotCom(int comSize) { 
 		ArrayList<String> alphaCells = new ArrayList<String>();
-		String[] alphacoords = new String[comSize]; // 'f6'과 같은 좌표가 들어감
+		//String[] alphacoords = new String[comSize]; // 'f6'과 같은 좌표가 들어감
 		String temp = null; // 나중에 연결하기 위한 임시 String 배열
 		int[] coords = new int[comSize]; // 현재후보좌표
 		int attempts = 0; // 시도 횟수를 세기 위한 카운터

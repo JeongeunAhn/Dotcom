@@ -16,6 +16,8 @@ public class RankHelper {
 	int misscount = 0;
 	int total = 0;
 	boolean id_exist = false;
+	boolean newrecord = false;
+	
 	File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt");
 	ArrayList<RankData> ranklist = new ArrayList<RankData>();
 	
@@ -28,19 +30,13 @@ public class RankHelper {
 
 	// rank 파일에 기록 입력하기
 	public void rank() {
-		try {// C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt
-				// 파일 객체 생성
-
+		try {
 			// 입력 스트림 생성
 			FileReader filereader = new FileReader(file);
 			// 입력 버퍼 생성
 			BufferedReader bufReader = new BufferedReader(filereader);
-
 			String line = null;
 			String[] splitedStr = new String[4];
-			
-
-			
 			
 			while ((line = bufReader.readLine()) != null) { // 한줄씩 읽기
 				splitedStr = null;
@@ -58,6 +54,7 @@ public class RankHelper {
 						splitedStr[3] = String.valueOf(total);
 						System.out.println("NEW BEST RECORD!");
 						System.out.println(id + " : " + total + " 점 입니다");
+						newrecord = true;
 					}
 				}
 				RankData data = new RankData(splitedStr[0],splitedStr[1],splitedStr[2],splitedStr[3]);
@@ -68,10 +65,17 @@ public class RankHelper {
 			if (id_exist == false) {
 				RankData data = new RankData(splitedStr[0],String.valueOf(time),String.valueOf(misscount),String.valueOf(total));
 				ranklist.add(data);
+				newrecord=true;
 			}
 			//ranklist에 파일 추가 끝.
 			updateRanking();
-			checktop3();
+			// 3위안에 들면서, 기록갱신한 경우거나, 새로 랭킹에 등록된 경우에 대해 출력
+			for(int i =0; i<3; i++) {
+				if(ranklist.get(i).getId().equals(this.id) && (newrecord == true)) {
+					printtop3();
+				}
+			}
+			
 		} catch (FileNotFoundException e) {
 			System.out.println("파일을 찾을 수 없습니다. 다시 실행해주세요.");
 		} catch (IOException e) {
@@ -81,15 +85,12 @@ public class RankHelper {
 
 	// 기록 갱신했을 때랑, 새로 랭킹에 등록될 때 3위 안에 드는지 체크, 3위안에 든다면 top3 함수 호출
 	// 기존 기록이 3위 안에 있지만 현재 게임 결과가 3위 안에 들지 않는다면 호출하지 않는다.
-	public void checktop3() {
-		// 3위 안에 드는 지 확인하는 코드 구현하기. 기록갱신 flag 만들기
-		
-		//
+	public void printtop3() {
 		System.out.println("NEW BEST RECORD");
 		System.out.println("TOP 3");
-		System.out.println("1위 :");
-		System.out.println("2위 :");
-		System.out.println("3위 :");
+		System.out.println("1위 :"+ ranklist.get(0).getId());
+		System.out.println("2위 :"+ ranklist.get(1).getId());
+		System.out.println("3위 :"+ ranklist.get(2).getId());
 	}
 
 	// rank 파일 정렬하는 함수
