@@ -39,8 +39,9 @@ public class AccountHelper {
 			System.out.print("PW : ");
 			password = sc.next();
 			try {// C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt
+				//C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt
 					// 파일 객체 생성
-				File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
+				File file = new File("C:\\\\Users\\\\User\\\\eclipse-workspace\\\\DotCom\\\\user.txt");
 				// 입력 스트림 생성
 				FileReader filereader = new FileReader(file);
 				// 입력 버퍼 생성
@@ -93,8 +94,10 @@ public class AccountHelper {
 				}
 			} catch (FileNotFoundException e) {
 				System.out.println("파일을 찾을 수 없습니다. 다시 실행해주세요.");
+				System.exit(0);
 			} catch (IOException e) {
 				System.out.println("에러가 발생했습니다. 다시 실행해주세요.");
+				System.exit(0);
 			}
 		}
 		// 중간에서 계정만들기를 희망한 경우
@@ -161,6 +164,7 @@ public class AccountHelper {
 		} // ID 확인 끝
 			// password 체크
 		System.out.println("비밀번호는 영문,숫자가 포함될 수 있으며, 3~16자 사이로 입력해야 합니다.");
+		System.out.println("PW :");
 		while (true) {
 			password = sc.next();
 			Pattern p = Pattern.compile("^[a-zA-Z0-9_]{3,16}$"); // 일단 ID랑 동일 조건. 정규표현식을 사용해서 원하는 조건으로 변경가능

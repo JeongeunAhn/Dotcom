@@ -1,6 +1,5 @@
 package com.nts.sqa.dotcom;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -186,7 +185,7 @@ public class DotComBust {
 
 		} // close for
 			// 너무 많이 틀리면 게임오버됨. 30번까지 입력가능하게 설정
-		if (numOfGuesses > 2) {
+		if (numOfGuesses > 29) {
 			System.out.println("입력 횟수 초과");
 			gameOver();
 			return;

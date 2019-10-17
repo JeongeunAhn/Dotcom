@@ -1,3 +1,5 @@
 ﻿ID	PASSWORD
 hello	hello
 아이디	비밀번호
+test_01	test_pw
+test001	test001

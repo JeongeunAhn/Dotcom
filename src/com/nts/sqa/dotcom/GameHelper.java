@@ -50,7 +50,7 @@ public class GameHelper {
 		});
 		threadPool.execute(task);
 		try {
-			result = task.get(5, TimeUnit.SECONDS);
+			result = task.get(60, TimeUnit.SECONDS);
 			
 		} catch (TimeoutException e) {
 			System.out.println("입력 시간이 초과되었습니다.");

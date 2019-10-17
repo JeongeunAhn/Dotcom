@@ -1,7 +1,5 @@
 package com.nts.sqa.dotcom;
 
-import java.util.Comparator;
-
 public class RankData implements Comparable<RankData>{
 	private String id = null;
 	private String time = null;
