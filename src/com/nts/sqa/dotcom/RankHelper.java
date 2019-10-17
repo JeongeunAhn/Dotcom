@@ -17,9 +17,9 @@ public class RankHelper {
 	int total = 0;
 	boolean id_exist = false;
 	boolean newrecord = false;
-//
-	//C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt
-	File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\rank.txt");
+	// C:\\Users\\User\\eclipse-workspace\\DotCom\\rank.txt
+	// C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt
+	File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt");
 	ArrayList<RankData> ranklist = new ArrayList<RankData>();
 
 	public RankHelper(String username, long time, int misscount) {
@@ -45,7 +45,6 @@ public class RankHelper {
 
 				for (int i = 0; i < splitedStr.length; i++) {
 					splitedStr[i] = splitedStr[i].trim();
-					System.out.println(splitedStr[i]);
 				}
 				if (splitedStr[0].equals(id)) { // 아이디 존재
 					id_exist = true;
@@ -57,11 +56,13 @@ public class RankHelper {
 						System.out.println("NEW BEST RECORD!");
 						System.out.println(id + " : " + total + " 점 입니다");
 						newrecord = true;
+					}else { // 기록 갱신이 아니라면 현재 점수만 출력
+						System.out.println(id + " : " + total + " 점 입니다");
 					}
 				}
 				RankData data = new RankData(splitedStr[0], splitedStr[1], splitedStr[2], splitedStr[3]);
 				ranklist.add(data);
-				
+
 			}
 			bufReader.close();
 			// 아이디가 없다면 새로 적기
@@ -79,8 +80,8 @@ public class RankHelper {
 					System.out.println("NEW BEST RECORD");
 					System.out.println("TOP 3");
 					System.out.println("1위 :" + ranklist.get(0).getId());
-					System.out.println("2위 :" );
-					System.out.println("3위 :" );
+					System.out.println("2위 :");
+					System.out.println("3위 :");
 				} else if (ranklist.size() == 2) {
 					System.out.println("NEW BEST RECORD");
 					System.out.println("TOP 3");
@@ -104,8 +105,10 @@ public class RankHelper {
 
 		} catch (FileNotFoundException e) {
 			System.out.println("파일을 찾을 수 없습니다. 다시 실행해주세요.");
+			System.exit(0);
 		} catch (IOException e) {
 			System.out.println("에러가 발생했습니다. 다시 실행해주세요.");
+			System.exit(0);
 		}
 	}
 

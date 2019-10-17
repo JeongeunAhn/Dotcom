@@ -15,7 +15,6 @@ public class DotComBust {
 	private ArrayList<String> Hint = new ArrayList<String>();
 	private int hintcount = 3;
 	private long beforetime, aftertime, time;
-	boolean restart = true;;
 
 	private void setUpGame() {
 		// first make some dot coms and give them locations
@@ -38,12 +37,14 @@ public class DotComBust {
 		System.out.println("목표는 닷컴들을 가라앉히는 것입니다.");
 		System.out.println("가장 적은 횟수로 모든 닷컴들을 가라앉히세요.");
 		System.out.println("로그인 하시려면 1번을, 계정을 만드시려면 2번을 눌러주세요.");
-		Scanner sc = new Scanner(System.in);
+		//Scanner sc = new Scanner(System.in);
+
 		int login_option = 1;
 		int grid_size = 7;
 		int num_of_dotcom = 3;
 		while (true) {
 			try {
+				Scanner sc = new Scanner(System.in);
 				login_option = sc.nextInt();
 				if (login_option == 1 || login_option == 2) {
 					break;
@@ -62,6 +63,7 @@ public class DotComBust {
 			System.out.println("그리드 사이즈를 입력하세요 : ");
 			while (true) {
 				try {
+					Scanner sc = new Scanner(System.in);
 					grid_size = sc.nextInt();
 					if (grid_size >= 7 && grid_size <= 11) {
 						helper.setGridLength(grid_size);
@@ -70,7 +72,7 @@ public class DotComBust {
 						System.out.println("7에서 11사이의 숫자를 입력하세요.");
 					}
 				} catch (InputMismatchException e) {
-					System.out.println("숫자를 입력하세요"); // 무한루프돎 확인필요
+					System.out.println("숫자를 입력하세요"); //
 				}
 			}
 
@@ -81,6 +83,7 @@ public class DotComBust {
 				System.out.println("dotcom 개수를 입력하세요");
 				while (true) {
 					try {
+						Scanner sc = new Scanner(System.in);
 						num_of_dotcom = sc.nextInt();
 						if (num_of_dotcom >= 3 && num_of_dotcom <= 5) {
 							hintcount = num_of_dotcom;
@@ -109,64 +112,60 @@ public class DotComBust {
 				dotComToSet.setLocationCells(newLocation);// dot com 객체의 세터 메소드를 호출하여 방금 보조 메소드에서 받아온 위치 지정
 				Hint.addAll(dotComToSet.getLocationCells());
 			}
-
 			bombLocation = helper.placeBomb(num_of_dotcom);
-			for (int i = 0; i < bombLocation.size(); i++) {
-				System.out.println();
-				System.out.print(bombLocation.get(i) + " ");
-			}
-			// bomb.setLocationCells(bombLocation);
 		}
 	}
 
-	private void startPlaying() throws InterruptedException, ExecutionException {
-		while (restart) {
-			restart =false; //초기화
-			beforetime = System.currentTimeMillis();
-			while (!dotComsList.isEmpty()) {
-
-				String userGuess = helper.getUserInput("Enter a guess");
-				System.out.println(userGuess);
-				if (userGuess.equals("hint")) {
-					if (hintcount == 0) {
-						System.out.println("힌트가 소진되었습니다.");
-					} else {
-						System.out.println("힌트 :" + Hint.remove(0));
-						hintcount--;
-					}
-				} else if (userGuess.equals("gameover")) {
-					gameOver();
-					break;
+	private boolean startPlaying() throws InterruptedException, ExecutionException {
+		boolean check=false;
+		beforetime = System.currentTimeMillis();
+		while (!dotComsList.isEmpty()) {
+			check=false;
+			String userGuess = helper.getUserInput("Enter a guess");
+			System.out.println(userGuess);
+			if (userGuess.equals("hint")) {
+				if (hintcount == 0) {
+					System.out.println("힌트가 소진되었습니다.");
 				} else {
-					checkUserGuess(userGuess);
-					if (restart == true)
-						break;
+					System.out.println("힌트 :" + Hint.remove(0));
+					hintcount--;
 				}
-			} // close while
-			if (restart == false) {
-				aftertime = System.currentTimeMillis();
-				time = (aftertime - beforetime) / 1000;
-				finishGame();
+			} else if (userGuess.equals("입력 시간이 초과되었습니다.")) {
+				return gameOver();
+				
+			} else {
+				check = checkUserGuess(userGuess);
+				if(check == true)
+					return true;
 			}
-		}
+		} // close while
+
+		aftertime = System.currentTimeMillis();
+		time = (aftertime - beforetime) / 1000;
+		finishGame();
+
+		return false;
 	} // close startPlaying method
 
-	private void checkBomb(String userGuess) {
+	private boolean checkBomb(String userGuess) {
 		for (int i = 0; i < bombLocation.size(); i++) {
 			if (bombLocation.get(i).equals(userGuess)) {
 				System.out.println("폭탄!");
-				gameOver();
-				return;
+				return gameOver();
 			}
 		}
+		return false;
 	}
 
-	private void checkUserGuess(String userGuess) {
+	private boolean checkUserGuess(String userGuess) {
 		numOfGuesses++;
 		String result = "miss"; // assume a miss until told otherwise
 		// 폭탄을 골랐는지 먼저 체크 후, 없으면 dotcom 검사
-		checkBomb(userGuess);
-
+		boolean check=false;
+		check = checkBomb(userGuess);
+		if (check == true) {
+			return check;
+		}
 		for (DotCom dotComToTest : dotComsList) {
 
 			// DotCom dotComToTest = (DotCom) dotComsList.get(i);
@@ -175,10 +174,11 @@ public class DotComBust {
 			if (result.equals("hit")) {
 				Hint.remove(userGuess); // 입력값이 맞으면 힌트목록에서 제거
 				// System.out.println(Hint);
+				// System.out.println(Hint);
 				break;
 			}
 			if (result.equals("kill")) {
-
+				Hint.remove(userGuess);
 				dotComsList.remove(dotComToTest); // he's gone
 				break;
 			}
@@ -187,34 +187,29 @@ public class DotComBust {
 			// 너무 많이 틀리면 게임오버됨. 30번까지 입력가능하게 설정
 		if (numOfGuesses > 29) {
 			System.out.println("입력 횟수 초과");
-			gameOver();
-			return;
+			return gameOver();
 		}
 		System.out.println(result);
+		return false;
 	}
 
 	private void finishGame() {
+		System.out.println("All Dot Coms are dead! Your stock is now worthless");
 		RankHelper rankhelper = new RankHelper(accounthelper.getId(), time, numOfGuesses);
 		rankhelper.rank();
-		System.out.println("All Dot Coms are dead! Your stock is now worthless");
-		if (numOfGuesses <= 9) {
-			System.out.println("It only took you " + numOfGuesses + " guesses.  You get the Enron award!");
-		} else {
-			System.out.println("Took you long enough. " + numOfGuesses + " guesses.");
-			System.out.println("Too bad you didn't get out before your options sank.");
-		}
 	}
 
-	public void gameOver() { // 시간초과, 미스 개수 초과, 폭탄 선택 시에 호출됨
-		numOfGuesses=0;
+	public boolean gameOver() { // 시간초과, 미스 개수 초과, 폭탄 선택 시에 호출됨
+		boolean check = false;
+		numOfGuesses = 0;
 		System.out.println("Game Over!");
 		System.out.println("게임을 다시 시작하려면 1번, 프로그램을 종료하려면 1을 제외한 다른키를 아무거나 누르세요.");
 		Scanner sc = new Scanner(System.in);
 		String n = sc.next();
 		try {
 			if (Integer.parseInt(n) == 1) {
-				restart = true;
-				return;
+				check = true;
+				return check;
 			} else {
 				System.out.println("Dotcom게임을 종료합니다.");
 				System.exit(0);
@@ -223,16 +218,16 @@ public class DotComBust {
 			System.out.println("Dotcom게임을 종료합니다.");
 			System.exit(0);
 		}
-
-	}
-
-	public void restart() { // restart 구현
-
+		return false;
 	}
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
-		DotComBust game = new DotComBust();
-		game.setUpGame();
-		game.startPlaying();
+		boolean restart = false; // false로 초기화
+		do {
+			restart = false;
+			DotComBust game = new DotComBust();
+			game.setUpGame();
+			restart = game.startPlaying();
+		} while (restart == true);
 	}
 }

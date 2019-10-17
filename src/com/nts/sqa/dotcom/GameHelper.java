@@ -53,8 +53,8 @@ public class GameHelper {
 			result = task.get(60, TimeUnit.SECONDS);
 			
 		} catch (TimeoutException e) {
-			System.out.println("입력 시간이 초과되었습니다.");
-			return "gameover";
+			
+			return "입력 시간이 초과되었습니다.";
 		}
 		
 		return result.toLowerCase();
@@ -140,6 +140,7 @@ public class GameHelper {
 			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
 			alphaCells.add(temp.concat(Integer.toString(row))); //array에 위치 저장하기
 			flag = true; //flag 초기화
+			System.out.print(alphaCells.get(i) + " ");
 		}
 		return alphaCells;
 	}
