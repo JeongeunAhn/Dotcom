@@ -50,10 +50,11 @@ public class GameHelper {
 		});
 		threadPool.execute(task);
 		try {
-			result = task.get(60, TimeUnit.SECONDS);
+			result = task.get(5, TimeUnit.SECONDS);
 			
 		} catch (TimeoutException e) {
-			
+			System.out.println();
+			System.out.println("Game Over! ");
 			return "입력 시간이 초과되었습니다.";
 		}
 		
@@ -62,7 +63,6 @@ public class GameHelper {
 
 	public ArrayList<String> placeDotCom(int comSize) { 
 		ArrayList<String> alphaCells = new ArrayList<String>();
-		//String[] alphacoords = new String[comSize]; // 'f6'과 같은 좌표가 들어감
 		String temp = null; // 나중에 연결하기 위한 임시 String 배열
 		int[] coords = new int[comSize]; // 현재후보좌표
 		int attempts = 0; // 시도 횟수를 세기 위한 카운터
@@ -110,7 +110,7 @@ public class GameHelper {
 			alphaCells.add(temp.concat(Integer.toString(row)));
 			x++;
 
-			 System.out.print(" coord "+x+" = " + alphaCells.get(x-1));
+			// System.out.print(" coord "+x+" = " + alphaCells.get(x-1)); //닷컴 위치 출력
 
 		}
 		// System.out.println("\n");
@@ -140,7 +140,7 @@ public class GameHelper {
 			temp = String.valueOf(alphabet.charAt(column)); // 열을 알파벳으로 변환
 			alphaCells.add(temp.concat(Integer.toString(row))); //array에 위치 저장하기
 			flag = true; //flag 초기화
-			System.out.print(alphaCells.get(i) + " ");
+			// System.out.print(alphaCells.get(i) + " ");// 폭탄 위치 출력
 		}
 		return alphaCells;
 	}

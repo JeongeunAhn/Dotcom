@@ -33,11 +33,11 @@ public class DotComBust {
 		dotComsList.add(two);
 		dotComsList.add(three);
 
-		System.out.println("닷컴게임을 시작합니다.!");
+		System.out.println("닷컴게임을 시작합니다!");
 		System.out.println("목표는 닷컴들을 가라앉히는 것입니다.");
 		System.out.println("가장 적은 횟수로 모든 닷컴들을 가라앉히세요.");
+		System.out.println("점수는 시도횟수와 걸리시간(초)의 곱입니다.");
 		System.out.println("로그인 하시려면 1번을, 계정을 만드시려면 2번을 눌러주세요.");
-		//Scanner sc = new Scanner(System.in);
 
 		int login_option = 1;
 		int grid_size = 7;
@@ -49,10 +49,10 @@ public class DotComBust {
 				if (login_option == 1 || login_option == 2) {
 					break;
 				} else {
-					System.out.println("1 또는 2를 입력하세요");
+					System.out.println("1 또는 2를 입력하세요.");
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("press 1 or 2.");
+				System.out.println("1 또는 2를 입력하세요.");
 			}
 		}
 		// 사용자의 입력을 받아 accounthelper 객체로 넘긴다
@@ -108,7 +108,6 @@ public class DotComBust {
 			// 이부분 확인하기
 			for (DotCom dotComToSet : dotComsList) { // 목록에 있는 각 닷컴에 대해 반복
 				ArrayList<String> newLocation = helper.placeDotCom(3); // 닷컴의 위치를 지정하기 위한 보조 메소드 호출
-				// DotCom dotComToSet = (DotCom) dotComsList.get(i);
 				dotComToSet.setLocationCells(newLocation);// dot com 객체의 세터 메소드를 호출하여 방금 보조 메소드에서 받아온 위치 지정
 				Hint.addAll(dotComToSet.getLocationCells());
 			}
@@ -117,10 +116,10 @@ public class DotComBust {
 	}
 
 	private boolean startPlaying() throws InterruptedException, ExecutionException {
-		boolean check=false;
+		boolean check = false;
 		beforetime = System.currentTimeMillis();
 		while (!dotComsList.isEmpty()) {
-			check=false;
+			check = false;
 			String userGuess = helper.getUserInput("Enter a guess");
 			System.out.println(userGuess);
 			if (userGuess.equals("hint")) {
@@ -132,25 +131,24 @@ public class DotComBust {
 				}
 			} else if (userGuess.equals("입력 시간이 초과되었습니다.")) {
 				return gameOver();
-				
+
 			} else {
 				check = checkUserGuess(userGuess);
-				if(check == true)
+				if (check == true)
 					return true;
 			}
 		} // close while
 
 		aftertime = System.currentTimeMillis();
 		time = (aftertime - beforetime) / 1000;
-		finishGame();
+		return finishGame();
 
-		return false;
 	} // close startPlaying method
 
 	private boolean checkBomb(String userGuess) {
 		for (int i = 0; i < bombLocation.size(); i++) {
 			if (bombLocation.get(i).equals(userGuess)) {
-				System.out.println("폭탄!");
+				System.out.println("Game Over! 폭탄이 터졌습니다.");
 				return gameOver();
 			}
 		}
@@ -161,7 +159,7 @@ public class DotComBust {
 		numOfGuesses++;
 		String result = "miss"; // assume a miss until told otherwise
 		// 폭탄을 골랐는지 먼저 체크 후, 없으면 dotcom 검사
-		boolean check=false;
+		boolean check = false;
 		check = checkBomb(userGuess);
 		if (check == true) {
 			return check;
@@ -173,8 +171,6 @@ public class DotComBust {
 
 			if (result.equals("hit")) {
 				Hint.remove(userGuess); // 입력값이 맞으면 힌트목록에서 제거
-				// System.out.println(Hint);
-				// System.out.println(Hint);
 				break;
 			}
 			if (result.equals("kill")) {
@@ -186,24 +182,26 @@ public class DotComBust {
 		} // close for
 			// 너무 많이 틀리면 게임오버됨. 30번까지 입력가능하게 설정
 		if (numOfGuesses > 29) {
-			System.out.println("입력 횟수 초과");
+			System.out.println("Game Over! 입력 횟수 초과입니다.");
 			return gameOver();
 		}
 		System.out.println(result);
 		return false;
 	}
 
-	private void finishGame() {
-		System.out.println("All Dot Coms are dead! Your stock is now worthless");
+	private boolean finishGame() {
+		System.out.println("성공입니다. 모든 닷컴이 가라앉았습니다!");
 		RankHelper rankhelper = new RankHelper(accounthelper.getId(), time, numOfGuesses);
 		rankhelper.rank();
+		return gameOver();
 	}
 
-	public boolean gameOver() { // 시간초과, 미스 개수 초과, 폭탄 선택 시에 호출됨
+	public boolean gameOver() { // 시간초과, 미스 개수 초과, 폭탄 선택, 게임 정상 종료 시에 호출됨
 		boolean check = false;
 		numOfGuesses = 0;
-		System.out.println("Game Over!");
+		// System.out.println("Game Over!");
 		System.out.println("게임을 다시 시작하려면 1번, 프로그램을 종료하려면 1을 제외한 다른키를 아무거나 누르세요.");
+		System.out.println("만약 입력 후 프로그램 재시작/종료가 되지 않는다면 한번 더 입력해주세요! :)");
 		Scanner sc = new Scanner(System.in);
 		String n = sc.next();
 		try {

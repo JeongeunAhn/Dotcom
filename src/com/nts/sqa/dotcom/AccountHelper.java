@@ -31,8 +31,8 @@ public class AccountHelper {
 	public void login() {
 		System.out.println("[로그인]");
 		int flag = 0;
-		Scanner sc = new Scanner(System.in);
 		loginloop: while (validaccount == false) { // ID와 패스워드가 일치할 때까지 입력받는다.
+			Scanner sc = new Scanner(System.in);
 			System.out.println("ID를 입력하세요.");
 			System.out.print("ID : ");
 			id = sc.next();
@@ -40,9 +40,8 @@ public class AccountHelper {
 			System.out.print("PW : ");
 			password = sc.next();
 			try {
-				//File file = new File(" C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt");
-					// 파일 객체 생성
-				File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
+				// 파일 객체 생성
+				File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt");
 				// 입력 스트림 생성
 				FileReader filereader = new FileReader(file);
 				// 입력 버퍼 생성
@@ -78,18 +77,19 @@ public class AccountHelper {
 					while (true) {
 
 						try {
+							sc = new Scanner(System.in);
 							option = sc.nextInt();
 
+							if (option == 1) {
+								break;
+							} else if (option == 2) {
+								flag = 1;
+								break loginloop;
+							} else {
+								System.out.println("1또는 2를 입력해주세요.");
+							}
 						} catch (InputMismatchException e) {
 							System.out.println("1 또는 2를 입력해주세요.");
-						}
-						if (option == 1) {
-							break;
-						} else if (option == 2) {
-							flag = 1;
-							break loginloop;
-						} else {
-							System.out.println("1또는 2를 입력해주세요.");
 						}
 					}
 				}
@@ -116,7 +116,7 @@ public class AccountHelper {
 
 	public void makeaccount() {
 		id_exist = true;
-		
+
 		Scanner sc = new Scanner(System.in);
 		System.out.println("ID는 영문,숫자,_가 포함될 수 있으며, 3~16자 사이로 입력해야 합니다.");
 		while (id_exist == true) { // 파일탐색해서 존재하는 ID가 없을 때 까지 입력 받기
@@ -131,8 +131,9 @@ public class AccountHelper {
 				// 이미 있는 ID인지 확인하기
 				try {
 					// 파일 객체 생성
-					//File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt"); //회사
-					File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
+					File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt"); // 회사
+					// File file = new
+					// File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
 					FileReader filereader = new FileReader(file);
 					BufferedReader bufReader = new BufferedReader(filereader);
 
@@ -168,8 +169,9 @@ public class AccountHelper {
 		} // ID 확인 끝
 			// password 체크
 		System.out.println("비밀번호는 영문,숫자가 포함될 수 있으며, 3~16자 사이로 입력해야 합니다.");
-		
+
 		while (true) {
+
 			System.out.println("PW :");
 			password = sc.next();
 			Pattern p = Pattern.compile("^[a-zA-Z0-9_]{3,16}$"); // 일단 ID랑 동일 조건. 정규표현식을 사용해서 원하는 조건으로 변경가능
@@ -177,10 +179,11 @@ public class AccountHelper {
 			boolean password_check = false;
 			password_check = password.matches(".*" + id.substring(0, 3) + ".*"); // ID 앞 4글자와 일치하는지 검사
 			if (m.find()) { // password가 입력조건에 맞는다면
-				if (! password_check) { // ID앞 4글차 체크도 통과하면
+				if (!password_check) { // ID앞 4글차 체크도 통과하면
 					// ID 와 password를 user.txt에 추가한다.
-					//File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt");
-					File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
+					File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\user.txt");
+					// File file = new
+					// File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\user.txt");
 					try {
 						FileWriter fw = new FileWriter(file, true);
 						fw.write("\r\n" + id + "\t" + password);
@@ -194,7 +197,7 @@ public class AccountHelper {
 					System.out.println("ID앞 4글자를 포함하고 있습니다. ID앞 4글자가 포함되지 않도록 다시 입력해주세요.");
 				}
 			} else {
-				System.out.println("3~16자 사이로 입력해야 합니다.");
+				System.out.println("영문/숫자만, 3~16자 사이로 입력해야 합니다.");
 			}
 		}
 		System.out.println("계정이 생성되었습니다.");

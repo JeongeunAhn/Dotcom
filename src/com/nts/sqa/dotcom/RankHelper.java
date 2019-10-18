@@ -17,9 +17,8 @@ public class RankHelper {
 	int total = 0;
 	boolean id_exist = false;
 	boolean newrecord = false;
-	// C:\\Users\\User\\eclipse-workspace\\DotCom\\rank.txt
-	// C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt
-	File file = new File("C:\\Users\\huyu0\\java\\Dotcom-master\\home\\rank.txt");
+	 
+	File file = new File("C:\\Users\\User\\eclipse-workspace\\DotCom\\rank.txt");
 	ArrayList<RankData> ranklist = new ArrayList<RankData>();
 
 	public RankHelper(String username, long time, int misscount) {
@@ -67,6 +66,7 @@ public class RankHelper {
 			bufReader.close();
 			// 아이디가 없다면 새로 적기
 			if (id_exist == false) {
+				System.out.println(id + " : " + total + " 점 입니다");
 				RankData data = new RankData(id, String.valueOf(time), String.valueOf(misscount),
 						String.valueOf(total));
 				ranklist.add(data);

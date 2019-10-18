@@ -26,7 +26,7 @@ public class DotCom {
 	         
 	         if (locationCells.isEmpty()) {
 	             result = "kill";
-	             System.out.println("Ouch! You sunk " + name + "  : ( ");
+	             System.out.println("오예!" + name +"을 가라앉혔습니다!");
 	         } else {
 	             result = "hit";
 	         }  // close if                       
